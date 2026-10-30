@@ -31,4 +31,15 @@ return [
         'limit' => (int) env('BACKUP_THROTTLE_LIMIT', 2),
         'period' => (int) env('BACKUP_THROTTLE_PERIOD', 600),
     ],
+
+    // Grandfather-father-son rotation for scheduled backups. When enabled, every successful scheduled
+    // backup prunes the server's older scheduled backups, keeping the newest "sons", the newest backup
+    // of each of the last "fathers" days and the newest backup of each of the last "grandfathers" weeks.
+    // Locked and manually created backups are never pruned.
+    'gfs' => [
+        'enabled' => (bool) env('BACKUP_GFS_ENABLED', false),
+        'sons' => (int) env('BACKUP_GFS_SONS', 10),
+        'fathers' => (int) env('BACKUP_GFS_FATHERS', 7),
+        'grandfathers' => (int) env('BACKUP_GFS_GRANDFATHERS', 3),
+    ],
 ];
